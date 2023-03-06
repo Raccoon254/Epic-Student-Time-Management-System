@@ -7,8 +7,8 @@ public class TimeManagementProgram {
         database = new Database();
     }
 
-    public void createUser(String username, String password, String email) {
-        User user = new User(username, password, email);
+    public void createUser(String id, String username, String password, String email) {
+        User user = new User(id,username, password, email);
         database.addUser(user);
     }
 
@@ -40,10 +40,27 @@ public class TimeManagementProgram {
         for (List<String> row : userData) {
             System.out.println(String.join(", ", row));
         }
+        // retrieve the student accounts from the database
+        List<List<String>> studentData = database.getAllStudents();
+
+        // display the student accounts
+        System.out.println("StudentList");
+        for (List<String> row : studentData) {
+            System.out.println(String.join(", ", row));
+        }
+        // retrieve the lecturer accounts from the database
+        List<List<String>> lecturerData = database.getAllLecturers();
+
+        // display the lecturer accounts
+        System.out.println("LecturerList");
+        for (List<String> row : lecturerData) {
+            System.out.println(String.join(", ", row));
+        }
+
     }
 
-    public void createStudent(String username, String password, String email) {
-        Student student = new Student(username, password, email);
+    public void createStudent(String id,String username, String password, String email) {
+        Student student = new Student(id,username, password, email);
         database.addStudent(student);
     }
 
@@ -55,18 +72,18 @@ public class TimeManagementProgram {
     }
 
     public static void displayAllStudents(){
-        // retrieve the user accounts from the database
+        // retrieve the student accounts from the database
         List<List<String>> studentData = database.getAllStudents();
 
-        // display the user accounts
+        // display the student accounts
         System.out.println("StudentList");
         for (List<String> row : studentData) {
             System.out.println(String.join(", ", row));
         }
     }
 
-    public void createLecturer(String username, String password, String email) {
-        Lecturer lecturer = new Lecturer(username, password, email);
+    public void createLecturer(String id,String username, String password, String email) {
+        Lecturer lecturer = new Lecturer(id, username, password, email);
         database.addLecturer(lecturer);
     }
 
@@ -78,18 +95,42 @@ public class TimeManagementProgram {
     }
 
     public static void displayAllLectures(){
-        // retrieve the user accounts from the database
+        // retrieve the lecturer accounts from the database
         List<List<String>> lecturerData = database.getAllLecturers();
 
-        // display the user accounts
+        // display the accounts
         System.out.println("LecturerList");
         for (List<String> row : lecturerData) {
             System.out.println(String.join(", ", row));
         }
     }
+    public static void displayAllTasks(){
+        // retrieve the lecturer accounts from the database
+        List<List<String>> taskData = database.getAllTasks();
 
-    public void createTask(String description, Date dueDate, int priorityLevel, int userId) {
-        Task task = new Task(description, dueDate, priorityLevel, userId);
+        // display the accounts
+        System.out.println("Task List");
+        for (List<String> row : taskData) {
+            System.out.println(
+                    " [ User Id:: " + row.get(0)+" ]" +
+                    " [ Priority Level:: "+ row.get(1)+" ]" +
+                    " [ Task Id:: "+ row.get(2)+" ]" +
+                    " [ Task Description:: "+ row.get(3)+" ]" +
+                    " [ Due Date:: "+ row.get(4)+" ]" +
+                    " [ Task Complete:: "+ row.get(5)+" ]" +
+                    " [ Date Added:: "+ row.get(6)+" ]"
+            );
+        }
+    }
+    public static void displayTask(String taskId){
+        List<String> gotYou = database.getTask(taskId);
+        for (String data : gotYou) {
+            System.out.println(data);
+        }
+    }
+
+    public void createTask(String description, Date dueDate, int priorityLevel, String userId, String taskId) {
+        Task task = new Task(description,dueDate, priorityLevel, userId,taskId);
         database.addTask(task);
     }
 
@@ -115,9 +156,12 @@ public class TimeManagementProgram {
 
     public static void main(String[] args) {
         TimeManagementProgram program = new TimeManagementProgram();
-        program.createUser("user", "password", "user@example.com");
-        program.createStudent("student", "password", "student@example.com");
-        program.createLecturer("lecturer", "password", "professorx@example.com");
+        program.createUser("S4CDR5","user", "password", "user@example.com");
+        program.createStudent("EGS5FC","student", "password", "student@example.com");
+        program.createLecturer("FR23SW","lecturer", "password", "professorx@example.com");
+        program.createTask("I am a task",new Date(System.currentTimeMillis()),1,"S4CDR5","34");
+       // displayAllTasks();
+        displayTask("34");
         }
 
     private void createNotification(int i, String s) {

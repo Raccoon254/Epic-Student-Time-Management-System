@@ -8,9 +8,11 @@ public class Database {
     private List<List<String>> userData;
     private List<List<String>> lecturerData;
     private List<List<String>> studentData;
+    private List<List<String>> taskData;
     // Add additional hashmaps for other types of data as needed
 
     public Database() {
+        taskData = new ArrayList<>();
         lecturerData = new ArrayList<>();
         studentData = new ArrayList<>();
         userData = new ArrayList<>();
@@ -20,7 +22,7 @@ public class Database {
 
     // Methods for user account operations
     public void addUser(User user) {
-        List<String> row = new ArrayList<>(Arrays.asList(user.getUsername(), user.getEmail(), user.getPassword()));
+        List<String> row = new ArrayList<>(Arrays.asList(user.getId(),user.getUsername(), user.getEmail(), user.getPassword()));
         userData.add(row);
     }
 
@@ -51,16 +53,22 @@ public class Database {
 
     // Methods for task operations
     public void addTask(Task task) {
-        taskMap.put(task.getTaskId(), task);
+        List<String> row = new ArrayList<>(Arrays.asList(task.getUserId(),task.getPriorityLevel(), task.getTaskId(),task.getDescription(),task.getDueDate(),task.isComplete(),task.getDateAdded()));
+        taskData.add(row);
+    }
+    public List getAllTasks(){
+        return taskData;
     }
 
-    public Task getTask(int taskId) {
-        return taskMap.get(taskId);
+    public List<String> getTask(String taskId) {
+        for (List<String> Task : taskData) {
+            if (Task.get(2).equals(taskId)) {
+                return Task;
+            }
+        }
+        return null;
     }
 
-    public void updateTask(Task task) {
-        taskMap.put(task.getTaskId(), task);
-    }
 
     public void deleteTask(int taskId) {
         taskMap.remove(taskId);
@@ -117,7 +125,7 @@ public class Database {
     }
 
     public void addStudent(Student student) {
-        List<String> row = new ArrayList<>(Arrays.asList(student.getUsername(), student.getEmail(), student.getPassword()));
+        List<String> row = new ArrayList<>(Arrays.asList(student.getId(),student.getUsername(), student.getEmail(), student.getPassword()));
         studentData.add(row);
     }
     public List getAllStudents(){
@@ -133,7 +141,7 @@ public class Database {
         return null;
     }
     public void addLecturer(Lecturer lecturer) {
-        List<String> row = new ArrayList<>(Arrays.asList(lecturer.getUsername(), lecturer.getEmail(), lecturer.getPassword()));
+        List<String> row = new ArrayList<>(Arrays.asList(lecturer.getId(),lecturer.getUsername(), lecturer.getEmail(), lecturer.getPassword()));
         lecturerData.add(row);
     }
     public List getAllLecturers(){

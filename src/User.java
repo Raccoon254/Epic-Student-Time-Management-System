@@ -1,10 +1,12 @@
 public class User {
+    private  String id;
     private String username;
     private String password;
     private String email;
     private boolean accountStatus;
 
-    public User(String username, String password, String email) {
+    public User(String id,String username, String password, String email) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
@@ -42,5 +44,9 @@ public class User {
 
     public void setAccountStatus(boolean accountStatus) {
         this.accountStatus = accountStatus;
+    }
+
+    public String getId() {
+        return id;
     }
 }

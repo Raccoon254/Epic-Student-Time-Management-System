@@ -1,0 +1,151 @@
+...............................
+Classes
+...............................
+
+
+User: This class will represent a user of the time management application, and will include attributes such as username, password, email, and account status.
+
+Student: This class will extend the User class and include additional attributes such as course enrollment, assigned tasks, and class schedules.
+
+Lecturer: This class will also extend the User class and include additional attributes such as course assignments, class schedules, and lecture materials.
+
+Task: This class will represent a task or assignment that a student needs to complete, and will include attributes such as due date, priority level, and completion status.
+
+Course: This class will represent a specific course or subject being taught, and will include attributes such as course code, course name, and course description.
+
+Schedule: This class will represent a schedule for a student or lecturer, and will include attributes such as class times, locations, and course information.
+
+Resource: This class will represent a resource such as a past paper, study guide, or lecture note, and will include attributes such as resource type, file path, and description.
+
+Notification: This class will represent a notification that is sent to a user of the time management application, and will include attributes such as notification type, recipient, and message content.
+
+Database: This class will handle database operations such as creating, reading, updating, and deleting user accounts, tasks, schedules, and other data.
+
+UserInterface: This class will handle the user interface of the time management application, and will include methods for displaying menus, forms, and notifications to the user, as well as capturing user input and interacting with other classes and components of the application.
+
+
+User logs in to the system or creates a new account if not already registered.
+a. User enters username and password.
+b. System verifies user credentials and logs the user in.
+c. If user does not have an account, they can register by providing their name, email, and password.
+
+System retrieves user data from the database.
+a. System uses the user's account credentials to query the database and retrieve their user data.
+b. User data includes personal information, course enrollment, assigned tasks, class schedules, and notification preferences.
+
+User is presented with a main menu with options to view tasks, view schedules, view courses, and view resources.
+a. User selects an option from the menu.
+b. System navigates to the corresponding page or screen.
+
+If user selects "view tasks", system retrieves all tasks associated with the user and displays them in order of priority level.
+a. System uses the user's account ID to query the database and retrieve all tasks assigned to the user.
+b. Tasks are displayed in a list with details including due date, priority level, and completion status.
+c. Tasks are sorted by priority level, with highest-priority tasks appearing at the top of the list.
+
+User can select a task to view more details or mark it as completed.
+a. User clicks on a task in the list to view more details.
+b. System displays additional information about the task, including a description and any associated resources.
+c. User can mark the task as completed or edit the task details.
+
+If user selects "view schedules", system retrieves all scheduled classes associated with the user and displays them in chronological order.
+a. System uses the user's account ID to query the database and retrieve all scheduled classes for the user.
+b. Classes are displayed in a calendar or table view, with details including class time, location, course code, and course name.
+c. Classes are sorted by date and time, with upcoming classes appearing first.
+
+User can view course information for each class or add a new class to their schedule.
+a. User clicks on a class in the schedule to view more details.
+b. System displays additional information about the class, including course description and any associated resources.
+c. User can add a new class to their schedule by selecting a course from a list of available courses.
+
+If user selects "view courses", system retrieves all courses associated with the user and displays them with course code, name, and description.
+a. System uses the user's account ID to query the database and retrieve all courses the user is enrolled in.
+b. Courses are displayed in a list with details including course code, name, and description.
+c. User can view and update course information or add a new course to their enrollment.
+
+User can view and update course information or add a new course to their enrollment.
+a. User clicks on a course in the list to view more details.
+b. System displays additional information about the course, including syllabus, assignments, and resources.
+c. User can update their course enrollment or add a new course by selecting a course from a list of available courses.
+
+If user selects "view resources", system retrieves all resources associated with the user and displays them with resource type and description.
+a. System uses the user's account ID to query the database and retrieve all resources the user has access to.
+b. Resources are displayed in a list with details including resource type and description.
+c. User can download resource files or add a new resource to the system.
+
+User can also search for specific resources by entering keywords in a search bar.
+
+If user downloads a resource, system retrieves the file from the database and prompts the user to save the file to their device.
+a. User clicks on the download button next to a resource in the list.
+b. System retrieves the file from the database and prompts the user to save the file to their device.
+
+If user adds a new resource, system prompts the user to provide details about the resource.
+a. User clicks on the "add resource" button.
+b. System prompts the user to select a resource type (e.g. document, video, audio, etc.) and provide a description.
+c. User can upload the resource file to the system.
+
+Admin can access the system with a super account and perform administrative tasks.
+a. Admin logs in to the system using super account credentials.
+b. System displays the admin dashboard with options to manage user accounts, courses, tasks, and resources.
+c. Admin can view user data, add or remove user accounts, create or edit courses, and manage resources.
+
+Lecturer can access the system with a lecturer account and perform teaching-related tasks.
+a. Lecturer logs in to the system using lecturer account credentials.
+b. System displays the lecturer dashboard with options to view course schedules, manage course materials, and grade assignments.
+c. Lecturer can view class schedules, upload and manage course materials, and grade student assignments.
+
+User logs in via the Student class:
+a. The Student class has a login method that takes in the user's username and password as parameters.
+b. The login method queries the database to verify the user's credentials.
+c. If the credentials are valid, the login method returns a User object that represents the logged-in user.
+
+The User class has the following attributes:
+a. userID: unique identifier for the user.
+b. username: the user's login name.
+c. password: the user's password.
+d. firstName: the user's first name.
+e. lastName: the user's last name.
+f. email: the user's email address.
+g. userType: the user's role in the system (e.g. student, lecturer, admin).
+
+The Resource class has the following attributes:
+a. resourceID: unique identifier for the resource.
+b. resourceName: the name of the resource.
+c. resourceType: the type of the resource (e.g. document, video, audio, etc.).
+d. description: a brief description of the resource.
+e. file: the file containing the resource data.
+
+The Course class has the following attributes:
+a. courseID: unique identifier for the course.
+b. courseName: the name of the course.
+c. description: a brief description of the course.
+d. lecturer: the lecturer assigned to teach the course.
+e. students: a list of students enrolled in the course.
+
+The Student class extends the User class and has the following additional attributes and methods:
+a. studentID: unique identifier for the student.
+b. coursesEnrolled: a list of courses the student is enrolled in.
+c. viewSchedule(): method that retrieves the student's class schedule.
+d. viewResources(): method that retrieves all resources associated with the student.
+
+The Lecturer class extends the User class and has the following additional attributes and methods:
+a. lecturerID: unique identifier for the lecturer.
+b. coursesTaught: a list of courses the lecturer is teaching.
+c. viewSchedule(): method that retrieves the lecturer's class schedule.
+d. viewCourseMaterials(): method that retrieves course materials for the courses the lecturer is teaching.
+e. gradeAssignment(): method that grades student assignments.
+
+The Admin class extends the User class and has the following additional attributes and methods:
+a. adminID: unique identifier for the admin.
+b. viewUserAccounts(): method that retrieves all user accounts in the system.
+c. addUserAccount(): method that adds a new user account to the system.
+d. removeUserAccount(): method that removes a user account from the system.
+e. createCourse(): method that creates a new course in the system.
+f. editCourse(): method that edits an existing course in the system.
+g. manageResources(): method that manages resources in the system.
+
+
+
+
+
+
+

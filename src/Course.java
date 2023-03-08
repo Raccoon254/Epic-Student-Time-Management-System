@@ -1,15 +1,18 @@
+import java.util.List;
+
 public class Course {
     private String courseCode;
     private String courseName;
     private String courseDescription;
+    private List<String> units;
 
-    public Course(String courseCode, String courseName, String courseDescription) {
+    public Course(String courseCode, String courseName, String courseDescription, List<String> units) {
         this.courseCode = courseCode;
         this.courseName = courseName;
         this.courseDescription = courseDescription;
+        this.units = units;
     }
 
-    // Getters and setters for all attributes
     public String getCourseCode() {
         return courseCode;
     }
@@ -32,5 +35,13 @@ public class Course {
 
     public void setCourseDescription(String courseDescription) {
         this.courseDescription = courseDescription;
+    }
+
+    public String getUnits() {
+        return String.valueOf(units);
+    }
+
+    public void setUnits(List<String> units) {
+        this.units = units;
     }
 }

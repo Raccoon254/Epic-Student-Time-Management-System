@@ -2,89 +2,62 @@ import java.util.*;
 
 public class TimeManagementProgram {
     private static Database database;
+    private static DatabaseConnection data;
 
     public TimeManagementProgram() {
         database = new Database();
     }
 
-    public void createUser(String id, String username, String password, String email) {
-        User user = new User(id,username, password, email);
-        database.addUser(user);
+    public void createUser(String id,String username, String password, String email,Boolean isLecturer) {
+        User student = new User(id,username, password, email,isLecturer);
+        data.addUser(student);
     }
 
     public static void displayUser(String username){
-        List<String> gotYou = database.getUser(username);
+        List<String> gotYou = data.getUser(username);
         for (String data : gotYou) {
             System.out.println( data);
+        }
+    }
+    public static void displayCourse(String courseCode){
+        List<String> gotYou = database.getCourse(courseCode);
+        for (String data : gotYou) {
+            System.out.println(data);
+        }
+    }
+
+    public static void editStudentData(String username, Student newStudent){
+        boolean isEdited=database.editStudent(username,newStudent);
+        if(isEdited){
+            System.out.println(username+" ::Detail Edit success");
+        } else {
+            System.out.println(username+" ::Detail Edit Failed");
         }
     }
 
     public static void displayAllUsers(){
-        // retrieve the user accounts from the database
-        List<List<String>> userData = database.getAllUsers();
-
-        // display the user accounts
-        System.out.println("UserList");
-        for (List<String> row : userData) {
-            System.out.println(String.join(", ", row));
-        }
-    }
-
-    //This method displays students users, Lecturers and Students
-    public static void displayAllRegistered(){
-        // retrieve the user accounts from the database
-        List<List<String>> userData = database.getAllUsers();
-
-        // display the user accounts
-        System.out.println("UserList");
-        for (List<String> row : userData) {
-            System.out.println(String.join(", ", row));
-        }
         // retrieve the student accounts from the database
-        List<List<String>> studentData = database.getAllStudents();
+        List<Student> studentData = data.getAllUsers();
 
         // display the student accounts
-        System.out.println("StudentList");
-        for (List<String> row : studentData) {
-            System.out.println(String.join(", ", row));
-        }
-        // retrieve the lecturer accounts from the database
-        List<List<String>> lecturerData = database.getAllLecturers();
+        System.out.println("All Users");
+        for (User row: studentData) {
+            boolean isNotStudent=row.getType();
+            String type;
+            if(isNotStudent) {
+                type = "Student";
+            }else{
+                type = "Lecturer";
+            }
+            System.out.println(row.getId()+" "+row.getUsername()+" "+row.getEmail()+" "+row.getPassword()+type);
 
-        // display the lecturer accounts
-        System.out.println("LecturerList");
-        for (List<String> row : lecturerData) {
-            System.out.println(String.join(", ", row));
-        }
-
-    }
-
-    public void createStudent(String id,String username, String password, String email) {
-        Student student = new Student(id,username, password, email);
-        database.addStudent(student);
-    }
-
-    public static void displayStudent(String username){
-        List<String> gotYou = database.getUser(username);
-        for (String data : gotYou) {
-            System.out.println( data);
         }
     }
-
-    public static void displayAllStudents(){
-        // retrieve the student accounts from the database
-        List<List<String>> studentData = database.getAllStudents();
-
-        // display the student accounts
-        System.out.println("StudentList");
-        for (List<String> row : studentData) {
-            System.out.println(String.join(", ", row));
-        }
-    }
-
-    public void createLecturer(String id,String username, String password, String email) {
-        Lecturer lecturer = new Lecturer(id, username, password, email);
-        database.addLecturer(lecturer);
+    public static void deleteCreatedStudent(String username){
+        boolean isDeleted= database.deleteStudent(username);
+        if(!isDeleted){
+            System.out.println("User:: "+username+" Delete Not Successful!");
+        }else if(isDeleted){ System.out.println("User:: "+username+" Delete Success!");}
     }
 
     public static void displayLecturer(String username){
@@ -104,6 +77,12 @@ public class TimeManagementProgram {
             System.out.println(String.join(", ", row));
         }
     }
+    public static void deleteCreatedLecturer(String username){
+        boolean isDeleted= database.deleteLecturer(username);
+        if(!isDeleted){
+            System.out.println("Lecturer:: "+username+" Delete Not Successful!");
+        }else if(isDeleted){ System.out.println("Lecturer:: "+username+" Delete Success!");}
+    }
     public static void displayAllTasks(){
         // retrieve the lecturer accounts from the database
         List<List<String>> taskData = database.getAllTasks();
@@ -122,11 +101,15 @@ public class TimeManagementProgram {
             );
         }
     }
+
+    public static void deleteCreatedTask(String taskId){
+        boolean isDeleted= database.deleteTask(taskId);
+        if(!isDeleted){
+            System.out.println("Task:: "+taskId+" Delete Not Successful!");
+        }else if(isDeleted){ System.out.println("Task:: "+taskId+" Delete Success!");}
+    }
     public static void displayTask(String taskId){
-        List<String> gotYou = database.getTask(taskId);
-        for (String data : gotYou) {
-            System.out.println(data);
-        }
+        System.out.println(database.getTask(taskId));
     }
 
     public void createTask(String description, Date dueDate, int priorityLevel, String userId, String taskId) {
@@ -134,14 +117,19 @@ public class TimeManagementProgram {
         database.addTask(task);
     }
 
-    public void createCourse(String courseCode, String courseName, String description) {
-        Course course = new Course(courseCode, courseName, description);
+    public void createCourse(String courseCode, String courseName, String description,List units) {
+        Course course = new Course(courseCode, courseName, description, units);
         database.addCourse(course);
+    }
+    public void displayCourses(){
+        List gotYou = database.getAllCourses();
+
+        System.out.println(database.getAllCourses());
     }
 
     public void createSchedule(Course course, String classTime, String location) {
         Schedule schedule = new Schedule(course, classTime, location);
-        database.addSchedule(schedule);
+        //Todo Create some code !!
     }
 
     public void createResource(String resourceType, String filePath, String description) {
@@ -153,80 +141,31 @@ public class TimeManagementProgram {
         Notification notification = new Notification(notificationType, recipient,messagee);
         database.addNotification(notification);
     }
+    /*
+    * Todo!! Create other methods and fix the existing notifications
+    */
 
     public static void main(String[] args) {
         TimeManagementProgram program = new TimeManagementProgram();
-        program.createUser("S4CDR5","user", "password", "user@example.com");
-        program.createStudent("EGS5FC","student", "password", "student@example.com");
-        program.createLecturer("FR23SW","lecturer", "password", "professorx@example.com");
+        program.createUser("S4CDR5","user", "password", "user@example.com",false);
+        program.createUser("EGS5FC", "Raccoon", "password1", "avenger@gmail.com",false);
+        program.createUser("GHT9YD", "Sam", "password2", "Sam@gmail.com",false);
+        program.createUser("KJU6RT", "RacSam", "password3", "Racsam@gmail.com",false);
+        program.createUser("QWE2AS", "Alice", "password4", "alice@gmail.com",true);
+        program.createUser("ZXN7BH", "TomSteve", "password5", "tom@gmail.com",true);
+        program.createUser("FR23SW","lecturer", "password", "professorx@gmail.com",true);
         program.createTask("I am a task",new Date(System.currentTimeMillis()),1,"S4CDR5","34");
-       // displayAllTasks();
-        displayTask("34");
+        program.displayAllUsers();
+        program.displayUser("Raccoon");
+
+
+        //List<String> unitList = Arrays.asList("Math100", "phyc234", "calc1", "eng345");
+        //program.createCourse("ACS","Applied CS","A Program Under CS",unitList);
         }
 
     private void createNotification(int i, String s) {
     }
 
     private void createSchedule(Date date, Date date1, String s, int i, int i1) {
-    }
-
-
-    static void  displayData(){
-        // create an instance of the database
-
-        // retrieve the user accounts from the database
-        Map<String, User> users = database.getUsers();
-
-        // display the user accounts
-        System.out.println("User Accounts:");
-        for (Map.Entry<String, User> entry : users.entrySet()) {
-            System.out.println("Username: " + entry.getKey() + ", User Data: " + entry.getValue());
-        }
-
-
-        // retrieve the tasks from the database
-        Map<String, Task> tasks = database.getTasks();
-
-        // display the tasks
-        System.out.println("\nTasks:");
-        for (Map.Entry<String, Task> entry : tasks.entrySet()) {
-            System.out.println("Description: " + entry.getKey() + ", User Data: " + entry.getValue());
-        }
-
-        // retrieve the courses from the database
-        List<Course> courses = database.getCourses();
-
-        // display the courses
-        System.out.println("\nCourses:");
-        for (Course course : courses) {
-            System.out.println(course);
-        }
-
-        // retrieve the schedules from the database
-        List<Schedule> schedules = database.getSchedules();
-
-        // display the schedules
-        System.out.println("\nSchedules:");
-        for (Schedule schedule : schedules) {
-            System.out.println(schedule);
-        }
-
-        // retrieve the resources from the database
-        List<Resource> resources = database.getResources();
-
-        // display the resources
-        System.out.println("\nResources:");
-        for (Resource resource : resources) {
-            System.out.println(resource);
-        }
-
-        // retrieve the notifications from the database
-        List<Notification> notifications = database.getNotifications();
-
-        // display the notifications
-        System.out.println("\nNotifications:");
-        for (Notification notification : notifications) {
-            System.out.println(notification);
-        }
     }
 }

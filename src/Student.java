@@ -5,11 +5,8 @@ public class Student extends User {
     private List<String> assignedTasks;
     private List<String> classSchedule;
 
-    public Student(String id,String username, String password, String email) {
-        super(id, username, password, email);
-        this.courseEnrollment = new ArrayList<>();
-        this.assignedTasks = new ArrayList<>();
-        this.classSchedule = new ArrayList<>();
+    public Student(String id,String username, String password, String email,Boolean isLecturer) {
+        super(id, username, password, email,isLecturer);
     }
 
     // Getters and setters for all attributes

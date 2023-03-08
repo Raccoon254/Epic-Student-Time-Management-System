@@ -4,18 +4,23 @@ public class User {
     private String password;
     private String email;
     private boolean accountStatus;
+    private boolean isLecturer;
 
-    public User(String id,String username, String password, String email) {
+    public User(String id,String username, String password, String email,Boolean isLecturer) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
+        this.isLecturer = isLecturer;
         this.accountStatus = true; // Account is active by default
     }
 
     // Getters and setters for all attributes
     public String getUsername() {
         return username;
+    }
+    public boolean getType() {
+        return isLecturer;
     }
 
     public void setUsername(String username) {

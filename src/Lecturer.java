@@ -5,8 +5,8 @@ public class Lecturer extends User {
     private List<String> classSchedule;
     private List<String> lectureMaterials;
 
-    public Lecturer(String id, String username, String password, String email) {
-        super(id, username, password, email);
+    public Lecturer(String id, String username, String password, String email,Boolean isLecturer) {
+        super(id, username, password, email,isLecturer);
         this.courseAssignments = new ArrayList<>();
         this.classSchedule = new ArrayList<>();
         this.lectureMaterials = new ArrayList<>();

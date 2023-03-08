@@ -1,24 +1,49 @@
 import java.util.*;
 
 public class Database {
-    private HashMap<String, User> userMap;
-    private HashMap<Integer, Task> taskMap;
-    private HashMap<String, Schedule> scheduleMap;
 
     private List<List<String>> userData;
     private List<List<String>> lecturerData;
     private List<List<String>> studentData;
     private List<List<String>> taskData;
-    // Add additional hashmaps for other types of data as needed
+    private List<List<String>> courseData;
+    // Add additional hashmaps !!Raccoon Uses Lists 😂🙌 :: !! for other types of data as needed
 
     public Database() {
+        courseData = new ArrayList<>();
         taskData = new ArrayList<>();
         lecturerData = new ArrayList<>();
         studentData = new ArrayList<>();
         userData = new ArrayList<>();
-        taskMap = new HashMap<>();
-        scheduleMap = new HashMap<>();
     }
+
+    //Methods For course management
+    public void addCourse(Course course){
+        List<String> row = new ArrayList<>(Arrays.asList(course.getCourseCode(),course.getCourseName(),course.getCourseDescription(),course.getUnits()));
+        courseData.add(row);
+    }
+
+    public List getAllCourses(){
+        return courseData;
+    }
+    public List<String> getCourse(String courseCode){
+        for(List<String> row : courseData ) {
+            if(row.get(0)==courseCode){
+                return row;
+            }
+        }
+        return null;
+    }
+    public boolean deleteCourse(String courseCode){
+
+        return false;
+    }
+    public boolean editCourse(String courseCode,Course newCourse){
+
+        return false;
+    }
+
+
 
     // Methods for user account operations
     public void addUser(User user) {
@@ -39,18 +64,6 @@ public class Database {
         return null;
     }
 
-
-
-
-
-    public void updateUser(User user) {
-        userMap.put(user.getUsername(), user);
-    }
-
-    public void deleteUser(String username) {
-        userMap.remove(username);
-    }
-
     // Methods for task operations
     public void addTask(Task task) {
         List<String> row = new ArrayList<>(Arrays.asList(task.getUserId(),task.getPriorityLevel(), task.getTaskId(),task.getDescription(),task.getDueDate(),task.isComplete(),task.getDateAdded()));
@@ -68,41 +81,30 @@ public class Database {
         }
         return null;
     }
-
-
-    public void deleteTask(int taskId) {
-        taskMap.remove(taskId);
+    public boolean deleteTask(String taskId) {
+        Iterator<List<String>> iterator = taskData.iterator();
+        while (iterator.hasNext()) {
+            List<String> user = iterator.next();
+            if (user.get(2).equals(taskId)) {
+                iterator.remove();
+                return true;
+            }
+        }
+        return false;
     }
 
     // Methods for schedule operations
-    public void addSchedule(Schedule schedule) {
-        scheduleMap.put(schedule.getScheduleId(), schedule);
-    }
+    //public void addSchedule(Schedule mySchedule)
 
-    public Schedule getSchedule(int scheduleId) {
-        return scheduleMap.get(scheduleId);
-    }
+    //public Schedule getSchedule(int scheduleId)
 
-    public void updateSchedule(Schedule schedule) {
-        scheduleMap.put(schedule.getScheduleId(), schedule);
-    }
+    //public void updateSchedule(Schedule schedule)
 
-    public void deleteSchedule(int scheduleId) {
-        scheduleMap.remove(scheduleId);
-    }
-
+    //public void deleteSchedule(int scheduleId)
     public void addResource(Resource resource) {
     }
 
     public void addNotification(Notification notification) {
-    }
-
-    public Map getUsers() {
-        return userMap;
-    }
-
-    public Map getTasks() {
-        return taskMap;
     }
 
     public List<Course> getCourses() {
@@ -111,9 +113,6 @@ public class Database {
 
     public List<Schedule> getSchedules() {
         return null;
-    }
-
-    public void addCourse(Course course) {
     }
 
     public List<Resource> getResources() {
@@ -140,6 +139,29 @@ public class Database {
         }
         return null;
     }
+    public boolean deleteStudent(String username) {
+        Iterator<List<String>> iterator = studentData.iterator();
+        while (iterator.hasNext()) {
+            List<String> user = iterator.next();
+            if (user.get(1).equals(username)) {
+                iterator.remove();
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean editStudent(String username, Student newStudent) {
+        for (List<String> user : studentData) {
+            if (user.get(1).equals(username)) {
+                user.set(0, newStudent.getId());
+                user.set(1, newStudent.getUsername());
+                user.set(2, newStudent.getEmail());
+                user.set(3, newStudent.getPassword());
+                return true;
+            }
+        }
+        return false;
+    }
     public void addLecturer(Lecturer lecturer) {
         List<String> row = new ArrayList<>(Arrays.asList(lecturer.getId(),lecturer.getUsername(), lecturer.getEmail(), lecturer.getPassword()));
         lecturerData.add(row);
@@ -155,5 +177,17 @@ public class Database {
             }
         }
         return null;
+    }
+
+    public boolean deleteLecturer(String username) {
+        Iterator<List<String>> iterator = lecturerData.iterator();
+        while (iterator.hasNext()) {
+            List<String> user = iterator.next();
+            if (user.get(1).equals(username)) {
+                iterator.remove();
+                return true;
+            }
+        }
+        return false;
     }
 }
